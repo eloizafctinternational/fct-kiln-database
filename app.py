@@ -104,17 +104,46 @@ else:
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
 
+# Tabela Resumo (Transposta) - VERSÃO "VISUAL POLISH"
     st.subheader("📋 DATA SHEET FOR SLIDES (Summary)")
+    
+    # 1. Colunas que queremos no corpo da tabela
     cols_summary = [
-        'client', 'capacity_tpy', 'heat_cons_kcal_kg', 'shell_diameter_m', 'length_m',
-        'calcined_temp_out_C', 'total_exhaust_nm3_kg', 'primary_air_flow_rate_kg_h',
-        'kiln_exhaust_flow_rate_nm3_h', 'dryer_exhaust_flow_rate_nm3_h', 'dryer_exhaust_temp_C',
-        'cooler_exhaust_flow_rate_nm3_h', 'cooler_exhaust_temp_C', 'fraction_to_gas_treatment_pct',
-        'fan_elec_cons_kw', 'drives_elec_cons_kw', 'total_power_kw'
+        'client', 'description', 'Year', 'capacity_tpy', 'heat_cons_kcal_kg', 
+        'kiln_heat_system', 'kiln_fuel_main', 'shell_diameter_m', 'length_m',
+        'calcined_temp_out_C', 'total_exhaust_nm3_kg', 'total_power_kw'
     ]
+    
     col_pres = [c for c in cols_summary if c in df_res.columns]
-    tabela_resumo_transposta = df_res[col_pres].rename(columns=apelidos).set_index(apelidos['client']).T
-    st.dataframe(tabela_resumo_transposta)
+    tabela_resumo = df_res[col_pres].copy()
+    
+    # 2. Lógica de Título
+    def definir_titulo_coluna(row):
+        cliente = str(row['client']).upper() # Nome do cliente em CAIXA ALTA 
+        
+        # Se tiver descrição, vira "CLIENTE | Descrição"
+        if 'description' in row and pd.notna(row['description']) and str(row['description']).strip() != "":
+            desc = str(row['description'])
+            return f"{cliente} | {desc}"
+        
+        # Se não tiver, vira "CLIENTE (Ano)"
+        return f"{cliente} ({row['Year']})"
+
+    tabela_resumo['Project_Header'] = tabela_resumo.apply(definir_titulo_coluna, axis=1)
+
+    tabela_resumo_final = tabela_resumo.rename(columns=apelidos)
+    
+    # 4. Transpor usando a etiqueta como cabeçalho
+    # Removemos o Cliente e a Descrição do corpo da tabela porque eles já estão no título!
+    colunas_remover = [apelidos.get('client', 'client'), 'description', 'Year', 'Project_Header']
+    
+    tabela_resumo_transposta = tabela_resumo_final.set_index('Project_Header').drop(
+        columns=[c for c in colunas_remover if c in tabela_resumo_final.columns], 
+        errors='ignore'
+    ).T
+    
+    # 5. Exibir com um visual mais limpo
+    st.dataframe(tabela_resumo_transposta, use_container_width=True)
 
     st.markdown("---")
     col1, col2 = st.columns(2)
