@@ -5,12 +5,12 @@ import io
 
 # --- 1. CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="Rotary Kiln Database", page_icon="⚙️", layout="wide")
-st.title("⚙️ Rotary Kiln Comparison Tool - Professional Version")
+st.title("⚙️ Rotary Kiln Comparison Tool")
 
 # --- 2. CONEXÃO COM O DROPBOX ---
 URL_DROPBOX = "https://www.dropbox.com/scl/fi/o3txb6fkr7lo4v1wlkdus/Rotary-Kill-Database.xlsx?rlkey=ra6g7p0tenr7zu74u5f0j4e7x&dl=1"
 
-@st.cache_data(ttl=3600) # O app guarda os dados em memória por 1 hora para não travar o Dropbox
+@st.cache_data(ttl=3600)
 def carregar_dados_nuvem(url):
     return pd.read_excel(url)
 
@@ -92,7 +92,6 @@ if df_res.empty:
 else:
     st.success(f"✅ Filter Complete! Found {len(df_res)} projects.")
 
-    # Gráfico de Dispersão: Capacidade vs Consumo
     st.subheader("📈 EFFICIENCY ANALYSIS")
     resultado_graf = df_res.rename(columns=apelidos)
     fig = px.scatter(resultado_graf, 
@@ -105,7 +104,6 @@ else:
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
 
-    # Tabela Resumo (Transposta)
     st.subheader("📋 DATA SHEET FOR SLIDES (Summary)")
     cols_summary = [
         'client', 'capacity_tpy', 'heat_cons_kcal_kg', 'shell_diameter_m', 'length_m',
@@ -118,11 +116,9 @@ else:
     tabela_resumo_transposta = df_res[col_pres].rename(columns=apelidos).set_index(apelidos['client']).T
     st.dataframe(tabela_resumo_transposta)
 
-    # --- 7. BOTÕES DE DOWNLOAD ---
     st.markdown("---")
     col1, col2 = st.columns(2)
     
-    # Prepara o Excel detalhado em memória para download
     output_detail = io.BytesIO()
     with pd.ExcelWriter(output_detail, engine='openpyxl') as writer:
         df_res.to_excel(writer, index=False)
@@ -135,7 +131,6 @@ else:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
         
-    # Prepara o Excel Resumo se a caixa estiver marcada
     if Download_Presentation_Data_Sheet:
         output_summary = io.BytesIO()
         with pd.ExcelWriter(output_summary, engine='openpyxl') as writer:
