@@ -176,16 +176,30 @@ if df_res.empty:
 else:
     st.success(f"✅ Filter Complete! Found {len(df_res)} projects.")
 
-    st.subheader("📈 EFFICIENCY ANALYSIS")
+st.subheader("📈 EFFICIENCY ANALYSIS")
+    
+    # Traduz as colunas
     resultado_graf = df_res.rename(columns=apelidos)
     
-    # Prepara o hover
+    # Prepara o hover 
     info_hover = []
-    if 'description' in df_res.columns: info_hover.append('description')
-    info_hover.extend([apelidos.get('shell_diameter_m', 'shell_diameter_m'), apelidos.get('length_m', 'length_m')])
-    if 'kiln_fuel_main' in df_res.columns: info_hover.append(apelidos.get('kiln_fuel_main', 'kiln_fuel_main'))
-    if 'moisture_pct' in df_res.columns: info_hover.append(apelidos.get('moisture_pct', 'moisture_pct'))
+    
+    if 'description' in df_res.columns: 
+        info_hover.append(apelidos['description'])
+        
+    if 'shell_diameter_m' in df_res.columns:
+        info_hover.append(apelidos['shell_diameter_m'])
+        
+    if 'length_m' in df_res.columns:
+        info_hover.append(apelidos['length_m'])
+        
+    if 'kiln_fuel_main' in df_res.columns: 
+        info_hover.append(apelidos['kiln_fuel_main'])
+        
+    if 'moisture_pct' in df_res.columns: 
+        info_hover.append(apelidos['moisture_pct'])
 
+    # Cria o gráfico
     fig = px.scatter(resultado_graf, 
                      x=apelidos['capacity_tpd'], 
                      y=apelidos['heat_cons_kcal_kg'], 
