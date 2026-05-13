@@ -216,25 +216,25 @@ else:
     
     cols_summary = [
         'client', 'description', 'Year', 
-        'capacity_tpy', 
-        'kiln_dimension_m', 
-        'cooler_dimension_m', 
+        'heat_cons_kcal_kg', 
         'kiln_fuel_main',      
         'kiln_fuel_flow_kg_h',
         'dryer_fuel',               
         'dryer_fuel_flow_kg_h',    
-        'heat_cons_kcal_kg', 
-        'calcined_temp_out_C', 
-        'kiln_exhaust_temp_C',
         'kiln_O2_pct',
-        'total_exhaust_nm3_kg',
         'primary_air_flow_rate_kg_h',
-        'kiln_exhaust_flow_rate_kg_h',
+        'kiln_exhaust_flow_rate_kg_h', #to FGT
+        'kiln_exhaust_temp_C',
         'dryer_exhaust_flow_rate_kg_h',
         'dryer_exhaust_temp_C',
         'cooler_exhaust_flow_rate_kg_h',
         'cooler_exhaust_temp_C',
+        'capacity_tpy',
+        'calcined_temp_out_C',
+        'kiln_dimension_m', 
+        'cooler_dimension_m', 
         'fraction_to_gas_treatment_pct',
+        'total_exhaust_nm3_kg',
         'fan_elec_cons_kwh_t',
         'drives_elec_cons_kwh_t'
     ]
@@ -265,10 +265,16 @@ else:
     # Aplicamos os nomes em Inglês (Apelidos)
     tabela_resumo_final = tabela_resumo.rename(columns=apelidos)
     
-    # Transposição e Limpeza
-    col_cli_apelido = apelidos.get('client', 'client')
-    colunas_remover = [col_cli_apelido, 'description', 'Year', 'Project_Header']
+# 5. Transposição e Limpeza
+    # Removemos o que já está no título da coluna pegando os nomes traduzidos!
+    colunas_remover = [
+        apelidos.get('client', 'Client'), 
+        apelidos.get('description', 'Description'), 
+        apelidos.get('Year', 'Year'), 
+        'Project_Header'
+    ]
     
+    # Definimos a etiqueta como índice e transpomos (.T)
     tabela_resumo_transposta = tabela_resumo_final.set_index(tabela_resumo_final.columns[-1]).drop(
         columns=[c for c in colunas_remover if c in tabela_resumo_final.columns], 
         errors='ignore'
