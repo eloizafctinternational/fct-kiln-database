@@ -176,7 +176,7 @@ if df_res.empty:
 else:
     st.success(f"✅ Filter Complete! Found {len(df_res)} projects.")
 
-st.subheader("📈 EFFICIENCY ANALYSIS")
+    st.subheader("📈 EFFICIENCY ANALYSIS")
     
     # Traduz as colunas
     resultado_graf = df_res.rename(columns=apelidos)
@@ -211,7 +211,7 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
 
-    # Tabela Resumo (Transposta) 
+    # --- Tabela Resumo (Transposta) ---
     st.subheader("📊 TECHNICAL DATASHEET")
     
     cols_summary = [
@@ -244,7 +244,7 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
     # O .reset_index(drop=True) limpa os números das linhas antigas
     tabela_resumo = df_res[col_pres].copy().reset_index(drop=True)
     
-    # 2. Geramos a etiqueta base (CLIENTE | Descrição ou Ano)
+    # Geramos a etiqueta base (CLIENTE | Descrição ou Ano)
     def gerar_etiqueta_base(row):
         cliente = str(row['client']).upper()
         if 'description' in row and pd.notna(row['description']) and str(row['description']).strip() != "":
@@ -253,7 +253,7 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
 
     tabela_resumo['Project_Header'] = tabela_resumo.apply(gerar_etiqueta_base, axis=1)
 
-    # 3. Numeração Automática de Duplicados (ex: RDF (1), RDF (2))
+    # Numeração Automática de Duplicados
     counts = tabela_resumo.groupby('Project_Header').cumcount() + 1
     duplicated_mask = tabela_resumo['Project_Header'].duplicated(keep=False)
     
@@ -262,10 +262,10 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
         axis=1
     )
 
-    # 4. Aplicamos os nomes em Inglês (Apelidos)
+    # Aplicamos os nomes em Inglês (Apelidos)
     tabela_resumo_final = tabela_resumo.rename(columns=apelidos)
     
-    # 5. Transposição e Limpeza
+    # Transposição e Limpeza
     col_cli_apelido = apelidos.get('client', 'client')
     colunas_remover = [col_cli_apelido, 'description', 'Year', 'Project_Header']
     
@@ -274,9 +274,10 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
         errors='ignore'
     ).T
     
-    # 6. Exibimos a tabela
+    # Exibimos a tabela
     st.dataframe(tabela_resumo_transposta, use_container_width=True)
 
+    # --- Botões de Download ---
     st.markdown("---")
     col1, col2 = st.columns(2)
     
