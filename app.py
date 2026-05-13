@@ -176,7 +176,7 @@ if df_res.empty:
 else:
     st.success(f"✅ Filter Complete! Found {len(df_res)} projects.")
 
-st.subheader("📈 EFFICIENCY ANALYSIS")
+    st.subheader("📈 EFFICIENCY ANALYSIS")
     resultado_graf = df_res.rename(columns=apelidos)
     
     # Prepara o hover
@@ -197,7 +197,7 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
 
-# Tabela Resumo (Transposta) 
+    # Tabela Resumo (Transposta) 
     st.subheader("📊 TECHNICAL DATASHEET")
     
     cols_summary = [
@@ -252,11 +252,9 @@ st.subheader("📈 EFFICIENCY ANALYSIS")
     tabela_resumo_final = tabela_resumo.rename(columns=apelidos)
     
     # 5. Transposição e Limpeza
-    # Removemos o que já está no título da coluna para não repetir na linha
     col_cli_apelido = apelidos.get('client', 'client')
     colunas_remover = [col_cli_apelido, 'description', 'Year', 'Project_Header']
     
-    # Definimos a etiqueta como índice e transpomos (.T)
     tabela_resumo_transposta = tabela_resumo_final.set_index(tabela_resumo_final.columns[-1]).drop(
         columns=[c for c in colunas_remover if c in tabela_resumo_final.columns], 
         errors='ignore'
