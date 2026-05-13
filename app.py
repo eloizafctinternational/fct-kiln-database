@@ -104,10 +104,9 @@ else:
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
 
-# Tabela Resumo (Transposta)
-    st.subheader("TECHNICAL DATASHEET")
+# Tabela Resumo (Transposta) 
+    st.subheader("📊 TECHNICAL DATASHEET")
     
-    # 1. Colunas que queremos no corpo da tabela
     cols_summary = [
         'client', 'description', 'Year', 'capacity_tpy', 'heat_cons_kcal_kg', 
         'kiln_heat_system', 'kiln_fuel_main', 'shell_diameter_m', 'length_m',
@@ -115,33 +114,43 @@ else:
     ]
     
     col_pres = [c for c in cols_summary if c in df_res.columns]
-    tabela_resumo = df_res[col_pres].copy()
     
-    # 2. Lógica de Título
-    def definir_titulo_coluna(row):
-        cliente = str(row['client']).upper() # Nome do cliente em CAIXA ALTA 
-        
-        # Se tiver descrição, vira "CLIENTE | Descrição"
+    # O .reset_index(drop=True) limpa os números das linhas antigas
+    tabela_resumo = df_res[col_pres].copy().reset_index(drop=True)
+    
+    # 2. Geramos a etiqueta base (CLIENTE | Descrição ou Ano)
+    def gerar_etiqueta_base(row):
+        cliente = str(row['client']).upper()
         if 'description' in row and pd.notna(row['description']) and str(row['description']).strip() != "":
-            desc = str(row['description'])
-            return f"{cliente} | {desc}"
-        
-        # Se não tiver, vira "CLIENTE (Ano)"
+            return f"{cliente} | {str(row['description'])}"
         return f"{cliente} ({row['Year']})"
 
-    tabela_resumo['Project_Header'] = tabela_resumo.apply(definir_titulo_coluna, axis=1)
+    tabela_resumo['Project_Header'] = tabela_resumo.apply(gerar_etiqueta_base, axis=1)
 
+    # 3. Numeração Automática de Duplicados (ex: RDF (1), RDF (2))
+    counts = tabela_resumo.groupby('Project_Header').cumcount() + 1
+    duplicated_mask = tabela_resumo['Project_Header'].duplicated(keep=False)
+    
+    tabela_resumo['Project_Header'] = tabela_resumo.apply(
+        lambda x: f"{x['Project_Header']} ({counts[x.name]})" if duplicated_mask[x.name] else x['Project_Header'],
+        axis=1
+    )
+
+    # 4. Aplicamos os nomes em Inglês (Apelidos)
     tabela_resumo_final = tabela_resumo.rename(columns=apelidos)
     
-    # 4. Transpor usando a etiqueta como cabeçalho
-    colunas_remover = [apelidos.get('client', 'client'), 'description', 'Year', 'Project_Header']
+    # 5. Transposição e Limpeza
+    # Removemos o que já está no título da coluna para não repetir na linha
+    col_cli_apelido = apelidos.get('client', 'client')
+    colunas_remover = [col_cli_apelido, 'description', 'Year', 'Project_Header']
     
-    tabela_resumo_transposta = tabela_resumo_final.set_index('Project_Header').drop(
+    # Definimos a etiqueta como índice e transpomos (.T)
+    tabela_resumo_transposta = tabela_resumo_final.set_index(tabela_resumo_final.columns[-1]).drop(
         columns=[c for c in colunas_remover if c in tabela_resumo_final.columns], 
         errors='ignore'
     ).T
     
-    # 5. Exibir com um visual mais limpo
+    # 6. Exibimos a tabela
     st.dataframe(tabela_resumo_transposta, use_container_width=True)
 
     st.markdown("---")
