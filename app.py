@@ -20,19 +20,103 @@ except Exception as e:
     st.error(f"⚠️ Erro ao conectar com a planilha: {e}")
     st.stop()
 
-# --- 3. DICIONÁRIO DE APELIDOS ---
+# --- 3. DICIONÁRIO DE APELIDOS (COMPLETO) ---
 apelidos = {
-    'client': 'Client', 'Year': 'Year', 'capacity_tpd': 'Capacity (TPD)', 'capacity_tpy': 'Capacity (TPY)',
-    'heat_cons_kcal_kg': 'Heat Consumption (kcal/kg)', 'shell_diameter_m': 'Shell Diameter (m)',
-    'length_m': 'Kiln Length (m)', 'l_d_ratio': 'L/D Ratio', 'speed_rpm': 'Speed (RPM)',
-    'kiln_heat_system': 'Kiln Heat System', 'kiln_fuel_main': 'Main Fuel', 'cooler_type': 'Cooler Type',
-    'total_power_kw': 'Total Power (kW)', 'material_type': 'Material Type', 'moisture_pct': 'Moisture (%)',
-    'calcined_temp_out_C': 'Calcined Temp Out (°C)', 'total_exhaust_nm3_kg': 'Total Exhaust (Nm³/kg)',
-    'primary_air_flow_rate_kg_h': 'Primary Air Flow Rate (kg/h)', 'kiln_exhaust_flow_rate_nm3_h': 'Kiln Exhaust Flow Rate to FGT (Nm³/h)',
-    'dryer_exhaust_flow_rate_nm3_h': 'Dryer Exhaust Flow Rate (Nm³/h)', 'dryer_exhaust_temp_C': 'Dryer Exhaust Temperature (°C)',
-    'cooler_exhaust_flow_rate_nm3_h': 'Cooler Exhaust Flow Rate (Nm³/h)', 'cooler_exhaust_temp_C': 'Cooler Exhaust Temperature (°C)',
-    'fraction_to_gas_treatment_pct': 'Fraction to Gas Treatment (%)', 'fan_elec_cons_kw': 'Fan Elec Cons (kW)',
-    'drives_elec_cons_kw': 'Drives Elec Cons (kW)'
+    # Informações Gerais do Projeto
+    'client': 'Client',
+    'Year': 'Year',
+    'description': 'Description',
+    'status': 'Status',
+    'proposal_id': 'Proposal ID',
+    'project_type': 'Project Type',
+    'project_id': 'Project ID',
+    'presentation_name': 'Presentation Name',
+    'pfd_file_name': 'PFD File Name',
+    'calc_file_name': 'Calculation File Name',
+    
+    # Material e Composição
+    'material_type': 'Material Type',
+    'kaolinite_pct': 'Kaolinite (%)',
+    'illite_pct': 'Illite (%)',
+    'montmori_pct': 'Montmorillonite (%)',
+    'goetite_pct': 'Goethite (%)',
+    'moisture_pct': 'Moisture (%)',
+    'LOI_pct': 'Loss on Ignition (LOI %)',
+    'fe2o3_pct': 'Fe2O3 (%)',
+    'color_control': 'Color Control',
+    
+    # Desempenho e Dimensões do Forno
+    'capacity_tpd': 'Capacity (TPD)',
+    'capacity_tpy': 'Capacity (TPY)',
+    'heat_cons_kcal_kg': 'Heat Consumption (kcal/kg)',
+    'shell_diameter_m': 'Shell Diameter (m)',
+    'length_m': 'Kiln Length (m)',
+    'l_d_ratio': 'L/D Ratio',
+    'slope_pct': 'Slope (%)',
+    'gas_velocity_inlet_kiln_ms': 'Gas Velocity at Kiln Inlet (m/s)',
+    'gas_velocity_cross_section_kiln_ms': 'Cross-Sectional Gas Velocity (m/s)',
+    'filling_degree_pct': 'Filling Degree (%)',
+    'retention_time_min': 'Retention Time (min)',
+    'speed_rpm': 'Kiln Speed (RPM)',
+    'kiln_dimension_m': 'Kiln Dimensions (m)',
+    'lifters_present': 'Lifters Present',
+    'kiln_status': 'Kiln Status',
+    
+    # Secador (Dryer)
+    'dryer': 'Dryer Present',
+    'dryer_type': 'Dryer Type',
+    'dryer_heat_system': 'Dryer Heat System',
+    'dryer_fuel': 'Dryer Fuel',
+    'dryer_biomass_pct': 'Dryer Biomass (%)',
+    'dryer_natural_gas_pct': 'Dryer Natural Gas (%)',
+    'dryer_biocoal_pct': 'Dryer Biocoal (%)',
+    'dryer_coal_pct': 'Dryer Coal (%)',
+    'dryer_fuel_flow_kg_h': 'Dryer Fuel Flow Rate (kg/h)',
+    
+    # Sistema Térmico e Combustível do Forno
+    'gasifier': 'Gasifier',
+    'kiln_heat_system': 'Kiln Heat System',
+    'kiln_fuel_main': 'Kiln Main Fuel(s)',
+    'kiln_fuel_flow_kg_h': 'Kiln Fuel Flow Rate (kg/h)',
+    'kiln_fuel_biomass_pct': 'Kiln Biomass (%)',
+    'kiln_fuel_petcoke_pct': 'Kiln Petcoke (%)',
+    'kiln_fuel_natural_gas_pct': 'Kiln Natural Gas (%)',
+    'kiln_fuel_rdf_pct': 'Kiln RDF (%)',
+    'kiln_fuel_coal_pct': 'Kiln Coal (%)',
+    'kiln_fuel_biocoal_pct': 'Kiln Biocoal (%)',
+    'HFO_pct': 'HFO (%)',
+    'kiln_fuel_rice_husk_pct': 'Kiln Rice Husk (%)',
+    
+    # Resfriador (Cooler)
+    'cooler_type': 'Cooler Type',
+    'cooler_dimension_m': 'Cooler Dimensions (m)',
+    'cooler_external_diameter_m': 'Cooler External Diameter (m)',
+    'cooler_length_m': 'Cooler Length (m)',
+    'cooler_mass_flow_kg_h': 'Cooler Mass Flow (kg/h)',
+    'cooler_product_mass_flow_kg_h': 'Cooler Product Mass Flow (kg/h)',
+    'water_injection': 'Water Injection',
+    'water_injection_flow_m3_h': 'Water Injection Flow (m³/h)',
+    
+    # Temperaturas, Vazões e Exaustão
+    'calcined_temp_out_C': 'Calcined Product Temp Out (°C)',
+    'secondary_air_temp_C': 'Secondary Air Temp (°C)',
+    'kiln_exhaust_temp_C': 'Kiln Exhaust Temp (°C)',
+    'kiln_O2_pct': 'Kiln Exhaust O2 (%)',
+    'total_exhaust_nm3_kg': 'Total Exhaust (Nm³/kg)',
+    'primary_air_flow_rate_kg_h': 'Primary Air Flow Rate (kg/h)',
+    'kiln_exhaust_flow_rate_kg_h': 'Kiln Exhaust Flow to FGT (kg/h)',
+    'dryer_exhaust_flow_rate_kg_h': 'Dryer Exhaust Flow Rate (kg/h)',
+    'dryer_exhaust_temp_C': 'Dryer Exhaust Temp (°C)',
+    'cooler_exhaust_flow_rate_kg_h': 'Cooler Exhaust Flow Rate (kg/h)',
+    'cooler_exhaust_temp_C': 'Cooler Exhaust Temp (°C)',
+    'fraction_to_gas_treatment_pct': 'Fraction to Gas Treatment (%)',
+    
+    # Consumo Elétrico
+    'main_drive_power_kw': 'Main Drive Power (kW)',
+    'fans_power_kw': 'Fans Power (kW)',
+    'total_power_kw': 'Total Installed Power (kW)',
+    'fan_elec_cons_kwh_t': 'Fan Elec Cons (kWh/t)',
+    'drives_elec_cons_kwh_t': 'Drives Elec Cons (kWh/t)'
 }
 
 # --- 4. BARRA LATERAL (FILTROS) ---
@@ -92,14 +176,23 @@ if df_res.empty:
 else:
     st.success(f"✅ Filter Complete! Found {len(df_res)} projects.")
 
-    st.subheader("📈 EFFICIENCY ANALYSIS")
+st.subheader("📈 EFFICIENCY ANALYSIS")
     resultado_graf = df_res.rename(columns=apelidos)
+    
+    # Prepara o hover
+    info_hover = []
+    if 'description' in df_res.columns: info_hover.append('description')
+    info_hover.extend([apelidos.get('shell_diameter_m', 'shell_diameter_m'), apelidos.get('length_m', 'length_m')])
+    if 'kiln_fuel_main' in df_res.columns: info_hover.append(apelidos.get('kiln_fuel_main', 'kiln_fuel_main'))
+    if 'moisture_pct' in df_res.columns: info_hover.append(apelidos.get('moisture_pct', 'moisture_pct'))
+
     fig = px.scatter(resultado_graf, 
                      x=apelidos['capacity_tpd'], 
                      y=apelidos['heat_cons_kcal_kg'], 
                      color=apelidos['client'],
-                     hover_data=[apelidos['shell_diameter_m'], apelidos['length_m']], 
+                     hover_data=info_hover, 
                      title="Capacity vs Consumption")
+    
     fig.update_layout(hoverlabel=dict(bgcolor="white", font_color="black"))
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
@@ -108,9 +201,28 @@ else:
     st.subheader("📊 TECHNICAL DATASHEET")
     
     cols_summary = [
-        'client', 'description', 'Year', 'capacity_tpy', 'heat_cons_kcal_kg', 
-        'kiln_heat_system', 'kiln_fuel_main', 'shell_diameter_m', 'length_m',
-        'calcined_temp_out_C', 'total_exhaust_nm3_kg', 'total_power_kw'
+        'client', 'description', 'Year', 
+        'capacity_tpy', 
+        'kiln_dimension_m', 
+        'cooler_dimension_m', 
+        'kiln_fuel_main',      
+        'kiln_fuel_flow_kg_h',
+        'dryer_fuel',               
+        'dryer_fuel_flow_kg_h',    
+        'heat_cons_kcal_kg', 
+        'calcined_temp_out_C', 
+        'kiln_exhaust_temp_C',
+        'kiln_O2_pct',
+        'total_exhaust_nm3_kg',
+        'primary_air_flow_rate_kg_h',
+        'kiln_exhaust_flow_rate_kg_h',
+        'dryer_exhaust_flow_rate_kg_h',
+        'dryer_exhaust_temp_C',
+        'cooler_exhaust_flow_rate_kg_h',
+        'cooler_exhaust_temp_C',
+        'fraction_to_gas_treatment_pct',
+        'fan_elec_cons_kwh_t',
+        'drives_elec_cons_kwh_t'
     ]
     
     col_pres = [c for c in cols_summary if c in df_res.columns]
