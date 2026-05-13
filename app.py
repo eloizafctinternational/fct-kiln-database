@@ -104,8 +104,8 @@ else:
     fig.update_traces(marker=dict(size=12, line=dict(width=1, color='Black')))
     st.plotly_chart(fig, use_container_width=True)
 
-# Tabela Resumo (Transposta) - VERSÃO "VISUAL POLISH"
-    st.subheader("📋 DATA SHEET FOR SLIDES (Summary)")
+# Tabela Resumo (Transposta)
+    st.subheader("TECHNICAL DATASHEET")
     
     # 1. Colunas que queremos no corpo da tabela
     cols_summary = [
@@ -134,7 +134,6 @@ else:
     tabela_resumo_final = tabela_resumo.rename(columns=apelidos)
     
     # 4. Transpor usando a etiqueta como cabeçalho
-    # Removemos o Cliente e a Descrição do corpo da tabela porque eles já estão no título!
     colunas_remover = [apelidos.get('client', 'client'), 'description', 'Year', 'Project_Header']
     
     tabela_resumo_transposta = tabela_resumo_final.set_index('Project_Header').drop(
