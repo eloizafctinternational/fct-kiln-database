@@ -138,6 +138,8 @@ Max_Length_m = st.sidebar.slider("Max Length (m)", 0, 150, 150, 1)
 st.sidebar.header("4. System Configuration")
 Dryer = st.sidebar.selectbox("Dryer", ["All", "Yes", "No"])
 Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["All", "HGG", "Burner"])
+Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
+
 # --- Na Seção 4. BARRA LATERAL ---
 st.sidebar.markdown("---")
 st.sidebar.subheader("Kiln Firing System")
@@ -152,8 +154,6 @@ firing_systems_selected = []
 for opcao in opcoes_firing:
     if st.sidebar.checkbox(opcao, value=True): # value=True já deixa marcado por padrão
         firing_systems_selected.append(opcao)
-
-Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
 
 st.sidebar.header("5. Export Options")
 Download_Presentation_Data_Sheet = st.sidebar.checkbox("Show Presentation Download Button")
