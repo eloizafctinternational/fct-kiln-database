@@ -46,8 +46,8 @@ apelidos = {
     'color_control': 'Color Control',
     
     # Desempenho e Dimensões do Forno
-    'capacity_tpd': 'Capacity (TPD)',
-    'capacity_tpy': 'Capacity (TPY)',
+    'capacity_tpd': 'Capacity (tpd)',
+    'capacity_tpy': 'Capacity (tpy)',
     'heat_cons_kcal_kg': 'Heat Consumption (kcal/kg)',
     'shell_diameter_m': 'Shell Diameter (m)',
     'length_m': 'Kiln Length (m)',
@@ -98,7 +98,7 @@ apelidos = {
     'water_injection_flow_m3_h': 'Water Injection Flow (m³/h)',
     
     # Temperaturas, Vazões e Exaustão
-    'calcined_temp_out_C': 'Calcined Product Temp Out (°C)',
+    'calcined_temp_out_C': 'Calcine Temperature (°C)',
     'secondary_air_temp_C': 'Secondary Air Temp (°C)',
     'kiln_exhaust_temp_C': 'Kiln Exhaust Temp (°C)',
     'kiln_O2_pct': 'Kiln O2 (%)',
@@ -121,8 +121,8 @@ apelidos = {
 
 # --- 4. BARRA LATERAL (FILTROS) ---
 st.sidebar.header("🔍 1. Primary Filters")
-Material = st.sidebar.selectbox("Material", ["Todos", "Clay", "Limestone", "Cement", "Other"])
-Min_Capacity_TPD = st.sidebar.slider("Min Capacity (TPD)", 0, 5000, 0, 50)
+Material = st.sidebar.selectbox("Material", ["All", "Clay", "Limestone", "Clinker", "Fly Ash", "Other"])
+Min_Capacity_tpd = st.sidebar.slider("Min Capacity (tpd)", 0, 5000, 0, 50)
 Max_Consumption_kcal_kg = st.sidebar.slider("Max Consumption (kcal/kg)", 0, 3000, 3000, 10)
 
 st.sidebar.header("2. Material Composition (Max %)")
@@ -131,18 +131,18 @@ Illite_pct = st.sidebar.slider("Illite (%)", 0, 100, 100, 1)
 Moisture_pct = st.sidebar.slider("Moisture (%)", 0, 100, 100, 1)
 LOI_pct = st.sidebar.slider("LOI (%)", 0, 100, 100, 1)
 Fe2O3_pct = st.sidebar.slider("Fe2O3 (%)", 0, 100, 100, 1)
-Color_Control = st.sidebar.selectbox("Color Control", ["Todos", "yes", "no", "IM"])
+Color_Control = st.sidebar.selectbox("Color Control", ["All", "Yes", "No"])
 
 st.sidebar.header("3. Kiln Dimensions (Max Values)")
 Max_Diameter_m = st.sidebar.slider("Max Diameter (m)", 0.0, 10.0, 10.0, 0.1)
 Max_Length_m = st.sidebar.slider("Max Length (m)", 0, 150, 150, 1)
 
 st.sidebar.header("4. System Configuration")
-Dryer = st.sidebar.selectbox("Dryer", ["Todos", "yes", "no"])
-Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["Todos", "HGG", "Burner"])
-Kiln_Status = st.sidebar.selectbox("Kiln Status", ["Todos", "Novo", "Existente"])
-Kiln_Heat_System = st.sidebar.selectbox("Kiln Heat System", ["Todos", "Burner", "Gasifier", "HGG"])
-Cooler_Type = st.sidebar.selectbox("Cooler Type", ["Todos", "Rotary", "Grate"])
+Dryer = st.sidebar.selectbox("Dryer", ["All", "Yes", "No"])
+Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["All", "HGG", "Burner"])
+Kiln_Status = st.sidebar.selectbox("Kiln Status", ["All", "New", "Existing"])
+Kiln_Heat_System = st.sidebar.selectbox("Kiln Heat System", ["All", "Burner", "Gasifier", "HGG"])
+Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
 
 st.sidebar.header("📥 5. Export Options")
 Download_Presentation_Data_Sheet = st.sidebar.checkbox("Show Presentation Download Button")
@@ -150,8 +150,8 @@ Download_Presentation_Data_Sheet = st.sidebar.checkbox("Show Presentation Downlo
 # --- 5. LÓGICA DE FILTRAGEM ---
 df_res = df.copy()
 
-if Material != "Todos": df_res = df_res[df_res['material_type'].str.contains(Material, case=False, na=False)]
-if Min_Capacity_TPD > 0: df_res = df_res[df_res['capacity_tpd'] >= Min_Capacity_TPD]
+if Material != "All": df_res = df_res[df_res['material_type'].str.contains(Material, case=False, na=False)]
+if Min_Capacity_tpd > 0: df_res = df_res[df_res['capacity_tpd'] >= Min_Capacity_tpd]
 if Max_Consumption_kcal_kg < 3000: df_res = df_res[df_res['heat_cons_kcal_kg'] <= Max_Consumption_kcal_kg]
 
 if Kaolinite_pct < 100: df_res = df_res[(df_res['kaolinite_pct'] <= Kaolinite_pct) | df_res['kaolinite_pct'].isna()]
@@ -159,16 +159,16 @@ if Illite_pct < 100: df_res = df_res[(df_res['illite_pct'] <= Illite_pct) | df_r
 if Moisture_pct < 100: df_res = df_res[(df_res['moisture_pct'] <= Moisture_pct) | df_res['moisture_pct'].isna()]
 if LOI_pct < 100: df_res = df_res[(df_res['LOI_pct'] <= LOI_pct) | df_res['LOI_pct'].isna()]
 if Fe2O3_pct < 100: df_res = df_res[(df_res['fe2o3_pct'] <= Fe2O3_pct) | df_res['fe2o3_pct'].isna()]
-if Color_Control != "Todos": df_res = df_res[df_res['color_control'].str.contains(Color_Control, case=False, na=False)]
+if Color_Control != "All": df_res = df_res[df_res['color_control'].str.contains(Color_Control, case=False, na=False)]
 
 if Max_Diameter_m < 10: df_res = df_res[df_res['shell_diameter_m'] <= Max_Diameter_m]
 if Max_Length_m < 150: df_res = df_res[df_res['length_m'] <= Max_Length_m]
 
-if Dryer != "Todos": df_res = df_res[df_res['dryer'].str.lower() == Dryer.lower()]
-if Dryer_Heat_System != "Todos": df_res = df_res[df_res['dryer_heat_system'].str.contains(Dryer_Heat_System, case=False, na=False)]
-if Kiln_Status != "Todos": df_res = df_res[df_res['kiln_status'].str.contains(Kiln_Status, case=False, na=False)]
-if Kiln_Heat_System != "Todos": df_res = df_res[df_res['kiln_heat_system'].str.contains(Kiln_Heat_System, case=False, na=False)]
-if Cooler_Type != "Todos": df_res = df_res[df_res['cooler_type'].str.contains(Cooler_Type, case=False, na=False)]
+if Dryer != "All": df_res = df_res[df_res['dryer'].str.lower() == Dryer.lower()]
+if Dryer_Heat_System != "All": df_res = df_res[df_res['dryer_heat_system'].str.contains(Dryer_Heat_System, case=False, na=False)]
+if Kiln_Status != "All": df_res = df_res[df_res['kiln_status'].str.contains(Kiln_Status, case=False, na=False)]
+if Kiln_Heat_System != "All": df_res = df_res[df_res['kiln_heat_system'].str.contains(Kiln_Heat_System, case=False, na=False)]
+if Cooler_Type != "All": df_res = df_res[df_res['cooler_type'].str.contains(Cooler_Type, case=False, na=False)]
 
 # --- 6. EXIBIR RESULTADOS ---
 if df_res.empty:
