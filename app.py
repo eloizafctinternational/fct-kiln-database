@@ -120,7 +120,7 @@ apelidos = {
 }
 
 # --- 4. BARRA LATERAL (FILTROS) ---
-st.sidebar.header("🔍 1. Primary Filters")
+st.sidebar.header("1. Primary Filters")
 Material = st.sidebar.selectbox("Material", ["All", "Clay", "Limestone", "Clinker", "Fly Ash", "Other"])
 Min_Capacity_tpd = st.sidebar.slider("Min Capacity (tpd)", 0, 5000, 0, 50)
 Max_Consumption_kcal_kg = st.sidebar.slider("Max Consumption (kcal/kg)", 0, 3000, 3000, 10)
@@ -144,7 +144,7 @@ Kiln_Status = st.sidebar.selectbox("Kiln Status", ["All", "New", "Existing"])
 Kiln_Heat_System = st.sidebar.selectbox("Kiln Heat System", ["All", "Burner", "Gasifier", "HGG"])
 Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
 
-st.sidebar.header("📥 5. Export Options")
+st.sidebar.header("5. Export Options")
 Download_Presentation_Data_Sheet = st.sidebar.checkbox("Show Presentation Download Button")
 
 # --- 5. LÓGICA DE FILTRAGEM ---
@@ -176,7 +176,7 @@ if df_res.empty:
 else:
     st.success(f"✅ Filter Complete! Found {len(df_res)} projects.")
 
-    st.subheader("📈 EFFICIENCY ANALYSIS")
+    st.subheader("EFFICIENCY ANALYSIS")
     
     # Traduz as colunas
     resultado_graf = df_res.rename(columns=apelidos)
@@ -212,7 +212,7 @@ else:
     st.plotly_chart(fig, use_container_width=True)
 
     # --- Tabela Resumo (Transposta) ---
-    st.subheader("📊 TECHNICAL DATASHEET")
+    st.subheader("TECHNICAL DATASHEET")
     
     cols_summary = [
         'client', 'description', 'Year', 
