@@ -138,12 +138,21 @@ Max_Length_m = st.sidebar.slider("Max Length (m)", 0, 150, 150, 1)
 st.sidebar.header("4. System Configuration")
 Dryer = st.sidebar.selectbox("Dryer", ["All", "Yes", "No"])
 Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["All", "HGG", "Burner"])
-Kiln_Status = st.sidebar.selectbox("Kiln Status", ["All", "New", "Existing"])
-firing_systems_selected = st.sidebar.multiselect(
-    "Kiln Firing System",
-    options=["Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"],
-    default=["Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"] # Opcional: já vem tudo selecionado
-)
+# --- Na Seção 4. BARRA LATERAL ---
+st.sidebar.markdown("---")
+st.sidebar.subheader("Kiln Firing System")
+
+# Definimos as opções
+opcoes_firing = ["Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"]
+
+# Criamos uma lista para guardar o que foi marcado
+firing_systems_selected = []
+
+# Criamos os quadradinhos (Checkboxes)
+for opcao in opcoes_firing:
+    if st.sidebar.checkbox(opcao, value=True): # value=True já deixa marcado por padrão
+        firing_systems_selected.append(opcao)
+
 Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
 
 st.sidebar.header("5. Export Options")
@@ -169,7 +178,8 @@ if Max_Length_m < 150: df_res = df_res[df_res['length_m'] <= Max_Length_m]
 if Dryer != "All": df_res = df_res[df_res['dryer'].str.lower() == Dryer.lower()]
 if Dryer_Heat_System != "All": df_res = df_res[df_res['dryer_heat_system'].str.contains(Dryer_Heat_System, case=False, na=False)]
 if Kiln_Status != "All": df_res = df_res[df_res['kiln_status'].str.contains(Kiln_Status, case=False, na=False)]
-if kiln_firing_system != "All": df_res = df_res[df_res['kiln_firing_system'].str.contains(kiln_firing_system, case=False, na=False)]
+if firing_systems_selected:
+    df_res = df_res[df_res['kiln_firing_system'].isin(firing_systems_selected)]
 if Cooler_Type != "All": df_res = df_res[df_res['cooler_type'].str.contains(Cooler_Type, case=False, na=False)]
 
 # --- 6. EXIBIR RESULTADOS ---
