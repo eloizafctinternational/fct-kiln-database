@@ -101,7 +101,7 @@ apelidos = {
     'calcined_temp_out_C': 'Calcined Product Temp Out (°C)',
     'secondary_air_temp_C': 'Secondary Air Temp (°C)',
     'kiln_exhaust_temp_C': 'Kiln Exhaust Temp (°C)',
-    'kiln_O2_pct': 'Kiln Exhaust O2 (%)',
+    'kiln_O2_pct': 'Kiln O2 (%)',
     'total_exhaust_nm3_kg': 'Total Exhaust (Nm³/kg)',
     'primary_air_flow_rate_kg_h': 'Primary Air Flow Rate (kg/h)',
     'kiln_exhaust_flow_rate_kg_h': 'Kiln Exhaust Flow to FGT (kg/h)',
