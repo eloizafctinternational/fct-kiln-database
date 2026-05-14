@@ -176,7 +176,8 @@ if Max_Length_m < 150: df_res = df_res[df_res['length_m'] <= Max_Length_m]
 
 if Dryer != "All": df_res = df_res[df_res['dryer'].str.lower() == Dryer.lower()]
 if Dryer_Heat_System != "All": df_res = df_res[df_res['dryer_heat_system'].str.contains(Dryer_Heat_System, case=False, na=False)]
-if Kiln_Status != "All": df_res = df_res[df_res['kiln_status'].str.contains(Kiln_Status, case=False, na=False)]
+if Kiln_Status != "All": 
+    df_res = df_res[df_res['kiln_status'].astype(str).str.contains(Kiln_Status, case=False, na=False)]
 if firing_systems_selected:
     df_res = df_res[df_res['kiln_firing_system'].isin(firing_systems_selected)]
 if Cooler_Type != "All": df_res = df_res[df_res['cooler_type'].str.contains(Cooler_Type, case=False, na=False)]
