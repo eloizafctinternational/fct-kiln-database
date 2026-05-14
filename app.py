@@ -73,7 +73,7 @@ apelidos = {
     
     # Sistema Térmico e Combustível do Forno
     'gasifier': 'Gasifier',
-    'kiln_heat_system': 'Kiln Heat System',
+    'kiln_firing_system': 'Kiln Firing System',
     'kiln_fuel_main': 'Kiln Main Fuel(s)',
     'kiln_fuel_flow_kg_h': 'Kiln Fuel Flow Rate (kg/h)',
     'kiln_fuel_biomass_pct': 'Kiln Biomass (%)',
@@ -139,7 +139,7 @@ st.sidebar.header("4. System Configuration")
 Dryer = st.sidebar.selectbox("Dryer", ["All", "Yes", "No"])
 Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["All", "HGG", "Burner"])
 Kiln_Status = st.sidebar.selectbox("Kiln Status", ["All", "New", "Existing"])
-Kiln_Heat_System = st.sidebar.selectbox("Kiln Heat System", ["All", "Burner", "Gasifier", "HGG"])
+kiln_firing_system = st.sidebar.selectbox("Kiln Firing System", ["All", "Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"])
 Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
 
 st.sidebar.header("5. Export Options")
@@ -165,7 +165,7 @@ if Max_Length_m < 150: df_res = df_res[df_res['length_m'] <= Max_Length_m]
 if Dryer != "All": df_res = df_res[df_res['dryer'].str.lower() == Dryer.lower()]
 if Dryer_Heat_System != "All": df_res = df_res[df_res['dryer_heat_system'].str.contains(Dryer_Heat_System, case=False, na=False)]
 if Kiln_Status != "All": df_res = df_res[df_res['kiln_status'].str.contains(Kiln_Status, case=False, na=False)]
-if Kiln_Heat_System != "All": df_res = df_res[df_res['kiln_heat_system'].str.contains(Kiln_Heat_System, case=False, na=False)]
+if kiln_firing_system != "All": df_res = df_res[df_res['kiln_firing_system'].str.contains(kiln_firing_system, case=False, na=False)]
 if Cooler_Type != "All": df_res = df_res[df_res['cooler_type'].str.contains(Cooler_Type, case=False, na=False)]
 
 # --- 6. EXIBIR RESULTADOS ---
