@@ -38,8 +38,6 @@ apelidos = {
     'material_type': 'Material Type',
     'kaolinite_pct': 'Kaolinite (%)',
     'illite_pct': 'Illite (%)',
-    'montmori_pct': 'Montmorillonite (%)',
-    'goetite_pct': 'Goethite (%)',
     'moisture_pct': 'Moisture (%)',
     'LOI_pct': 'Loss on Ignition (LOI %)',
     'fe2o3_pct': 'Fe2O3 (%)',
