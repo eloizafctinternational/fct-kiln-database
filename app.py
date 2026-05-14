@@ -139,7 +139,11 @@ st.sidebar.header("4. System Configuration")
 Dryer = st.sidebar.selectbox("Dryer", ["All", "Yes", "No"])
 Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["All", "HGG", "Burner"])
 Kiln_Status = st.sidebar.selectbox("Kiln Status", ["All", "New", "Existing"])
-kiln_firing_system = st.sidebar.selectbox("Kiln Firing System", ["All", "Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"])
+firing_systems_selected = st.sidebar.multiselect(
+    "Kiln Firing System",
+    options=["Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"],
+    default=["Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"] # Opcional: já vem tudo selecionado
+)
 Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
 
 st.sidebar.header("5. Export Options")
