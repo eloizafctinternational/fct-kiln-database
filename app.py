@@ -139,20 +139,19 @@ st.sidebar.header("4. System Configuration")
 Dryer = st.sidebar.selectbox("Dryer", ["All", "Yes", "No"])
 Dryer_Heat_System = st.sidebar.selectbox("Dryer Heat System", ["All", "HGG", "Burner"])
 Cooler_Type = st.sidebar.selectbox("Cooler Type", ["All", "Rotary", "Grate"])
+Kiln_Status = st.sidebar.selectbox("Kiln Status", ["All", "New", "Existing"])
 
 # --- Na Seção 4. BARRA LATERAL ---
 st.sidebar.markdown("---")
 st.sidebar.subheader("Kiln Firing System")
 
-# Definimos as opções
 opcoes_firing = ["Burner", "Gasifier", "Burner/HGG", "Burner/Gasifier", "Gasifier/HGG"]
-
-# Criamos uma lista para guardar o que foi marcado
 firing_systems_selected = []
 
-# Criamos os quadradinhos (Checkboxes)
+# Criamos os quadradinhos um embaixo do outro
 for opcao in opcoes_firing:
-    if st.sidebar.checkbox(opcao, value=True): # value=True já deixa marcado por padrão
+    # O key=f"check_{opcao}" garante que o Streamlit não se confunda
+    if st.sidebar.checkbox(opcao, value=True, key=f"check_{opcao}"):
         firing_systems_selected.append(opcao)
 
 st.sidebar.header("5. Export Options")
